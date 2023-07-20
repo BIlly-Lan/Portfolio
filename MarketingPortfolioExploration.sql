@@ -3,7 +3,7 @@ USE Portfolio_Project;
 SELECT * 
 FROM customer_table cus;
 
--- What was the response rate all 5 from campaign efforts? 
+-- What was the response rate for all 5 of the campaign efforts? 
 
 SELECT SUM(AcceptedCmpOverall)/COUNT(id)*100 AS OverallCmpSucsessRate
 FROM campaign_table;
@@ -19,8 +19,8 @@ SELECT
     SUM(AcceptedCmp5) AS Cmp5Total
 FROM campaign_table;
 
--- Highest performing = Cmp 4 = 164 accepted
--- Lowest performing = Cmp 2 =  30 accepted
+-- *Highest performing = Cmp 4 = 164 accepted
+-- *Lowest performing = Cmp 2 =  30 accepted
 
 
 -- Next:  What was the total response rate out of all customers asked across all campaigns 
@@ -54,7 +54,7 @@ FROM campaign_table;
 -- Cmp5 SR = 7.30%
 -- avg SR 5.98%
 
--- What is the best performing platform to sell proucts from ;
+-- What is the best-performing platform to sell products from ;
 
 SELECT 
 	AVG(NumWebPurchases) AS avgwebpurchases,
@@ -62,48 +62,11 @@ SELECT
     AVG(NumCatalogPurchases) AS avgcatalogpurchases
 FROM product_orders_table;
 
--- Web = 4.1007, Store= 5.8236 Catalog = 2.6454
+-- *Web = 4.1007, Store= 5.8236 Catalog = 2.6454
 
 
--- This next query is shows customer & purchase sourse type, as well as accepted cmp overall
 
-SELECT DISTINCT
-	pot.MntTotal, 
-	ct.id,
-    income,
-    age,
-    customer_days,
-	NumWebPurchases,
-    NumStorePurchases,
-    NumCatalogPurchases, 
-    AcceptedCmpOverall
-FROM product_orders_table pot
-JOIN customer_table ct 
-	ON pot.id = ct.id
-JOIN campaign_table camt
-	ON pot.id = camt.id
-ORDER BY pot.MntTotal DESC;
-
-
--- top 5 mnttotal > 2300
-
-SELECT DISTINCT
-	pot.MntTotal, 
-	ct.id,
-    income,
-    age,
-	NumWebPurchases,
-    NumStorePurchases,
-    NumCatalogPurchases, 
-    AcceptedCmpOverall
-FROM product_orders_table pot
-JOIN customer_table ct 
-	ON pot.id = ct.id
-JOIN campaign_table camt
-	ON pot.id = camt.id
-ORDER BY AcceptedCmpOverall DESC;
-
--- What are the characteristics of customers who responded positively to the pilot campaign? Is there any common pattern among them?
+-- What are the characteristics of customers who responded positively to the pilot campaign? Is there any typical pattern among them?
 
 SELECT 
 	income, 
@@ -130,10 +93,10 @@ JOIN Product_orders_table pot
 ORDER BY mnttotal DESC
 LIMIT 10;
 
--- * Found corralation between having an extended education & total products purchased
+-- * Found correlation between having an extended education & total products purchased
 
 
--- NEXT: is there a corraltion between the top 10 customers that used accepted the most campaigns ?
+-- NEXT: is there a correlation between the top 10 customers that used accepted the most campaigns?
 
 
 SELECT * 
