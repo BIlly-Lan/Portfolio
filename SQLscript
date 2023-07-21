@@ -1,18 +1,10 @@
-USE Portfolio_Project;
-
-SELECT * 
-FROM customer_table cus;
-
--- What was the response rate for all 5 of the campaign efforts? 
-
-SELECT SUM(AcceptedCmpOverall)/COUNT(id)*100 AS OverallCmpSucsessRate
-FROM campaign_table;
 
 
--- Next: What was the best to lowest performing campaign
+
+-- USED: Previous Campaign Performance:
 
 SELECT 
-	SUM(AcceptedCmp1) AS Cmp1Total,
+    SUM(AcceptedCmp1) AS Cmp1Total,
     SUM(AcceptedCmp2) AS Cmp2Total,
     SUM(AcceptedCmp3) AS Cmp3Total,
     SUM(AcceptedCmp4) AS Cmp4Total,
@@ -23,14 +15,11 @@ FROM campaign_table;
 -- *Lowest performing = Cmp 2 =  30 accepted
 
 
--- Next:  What was the total response rate out of all customers asked across all campaigns 
+-- What was the total response rate out of all customers asked across all campaigns 
 
 SELECT 
     AVG(AcceptedCmpOverall)/COUNT(id)*100 AS TotalResponseRate
 FROM campaign_table;
-
-
--- Total Response rate is Total Customers asked 2205/ Average number of Acceptions = 0.013%
 
 
 SELECT
@@ -47,14 +36,14 @@ SELECT
     (SUM(AcceptedCmp5) / COUNT(id)) * 100 AS Cmp5SuccessRate
 FROM campaign_table;
 
--- cmp1 SR = 6.43%
--- Cmp2 SR = 1.36%
--- Cmp3 SR = 7.39%
--- Cmp4 SR = 7.43%
--- Cmp5 SR = 7.30%
--- avg SR 5.98%
+-- *cmp1 SR = 6.43%
+-- *Cmp2 SR = 1.36%
+-- *Cmp3 SR = 7.39%
+-- *Cmp4 SR = 7.43%
+-- *Cmp5 SR = 7.30%
+-- *Avg SR 5.98%
 
--- What is the best-performing platform to sell products from ;
+-- USED: What is the best-performing platform to sell products from :
 
 SELECT 
 	AVG(NumWebPurchases) AS avgwebpurchases,
@@ -66,7 +55,7 @@ FROM product_orders_table;
 
 
 
--- What are the characteristics of customers who responded positively to the pilot campaign? Is there any typical pattern among them?
+-- USED: What are the characteristics of customers who responded positively to the pilot campaign? Is there any typical pattern among them?
 
 SELECT 
 	income, 
@@ -106,10 +95,10 @@ JOIN customer_table cust
 ORDER BY AcceptedCmpOverall DESC
 LIMIT 10;
 
--- AGE 45 - 60
--- Income > 80,000
+-- *AGE 45 - 60
+-- *Income > 80,000
 
--- NEXT: is there a corraltion between the BOTTOM 10 customers that used accepted the most campaigns ?
+-- NEXT: is there a correlation between the BOTTOM 10 customers that used accepted the most campaigns?
  
 
 SELECT 
@@ -121,7 +110,7 @@ JOIN customer_table cust
 	ON cust.id = camt.id
 LIMIT 10;
 
--- Relationship between campaign acceptance and purchasing behavior
+-- Next: Relationship between campaign acceptance and purchasing behaviour?
 
 SELECT 
 	pot.NumWebVisitsMonth,
@@ -132,7 +121,7 @@ JOIN product_orders_table pot
 ORDER BY NumWebVisitsMonth DESC
 lIMIT 10;
 
--- No strong corralation bettween web visit frequency and campaign acceptance
+-- *No strong correlation between web visit frequency and campaign acceptance
 
 SELECT 
 	acceptedcmpoverall,
@@ -148,9 +137,9 @@ JOIN product_orders_table pot
     ON pot.id = camt.id
 ORDER BY acceptedcmpoverall DESC;
 
--- The customers who accepted more campaigns order a little more wine than average but nothing too extreme. 
+-- *The customers who accepted more campaigns ordered a little more wine than average but nothing too extreme. 
 
--- totalmnt vs acceptedcmpoverall
+-- Is there a totalmnt & acceptedcmpoverall relationship?
 
 
 SELECT 
@@ -162,15 +151,14 @@ JOIN product_orders_table pot
 ORDER BY NumWebVisitsMonth DESC
 lIMIT 10;
 
--- No strong corralation bettween web visit frequency and campaign acceptance
+-- *No strong correlation between web visit frequency and campaign acceptance
 
 SELECT 
-	acceptedcmpoverall,
-	mnttotal
-FROM campaign_table camt
-JOIN product_orders_table pot
-    ON pot.id = camt.id
-ORDER BY mnttotal DESC;
-
+	SUM(Education_Master),
+	SUM(Education_Graduation),
+	SUM(Education_PhD), 
+    SUM(Education_Master + Education_Graduation + Education_PhD) AS Highereducationtotal, 
+    COUNT(id) - SUM(Education_Master + Education_Graduation + Education_PhD) AS NONHighereducationtotal
+FROM customer_table;
 
 
