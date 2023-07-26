@@ -1,7 +1,7 @@
 
 
 
--- USED: Previous Campaign Performance:
+-- 1. Total Campaign Performance:
 
 SELECT 
     SUM(AcceptedCmp1) AS Cmp1Total,
@@ -11,16 +11,16 @@ SELECT
     SUM(AcceptedCmp5) AS Cmp5Total
 FROM campaign_table;
 
--- *Highest performing = Cmp 4 = 164 accepted
--- *Lowest performing = Cmp 2 =  30 accepted
 
-
--- What was the total response rate out of all customers asked across all campaigns 
+-- 2. Total Response Rate Across All Campaigns:
 
 SELECT 
     AVG(AcceptedCmpOverall)/COUNT(id)*100 AS TotalResponseRate
 FROM campaign_table;
 
+
+
+-- 3. Campaign Success Rates:
 
 SELECT
     COUNT(id) AS TotalCustomersAsked,
@@ -36,26 +36,20 @@ SELECT
     (SUM(AcceptedCmp5) / COUNT(id)) * 100 AS Cmp5SuccessRate
 FROM campaign_table;
 
--- *cmp1 SR = 6.43%
--- *Cmp2 SR = 1.36%
--- *Cmp3 SR = 7.39%
--- *Cmp4 SR = 7.43%
--- *Cmp5 SR = 7.30%
--- *Avg SR 5.98%
 
--- USED: What is the best-performing platform to sell products from :
+-- 4. Best Performing Platform for Selling Products:
 
 SELECT 
-	AVG(NumWebPurchases) AS avgwebpurchases,
-    AVG(NumStorePurchases) AS avgstorepurchases,
-    AVG(NumCatalogPurchases) AS avgcatalogpurchases
+        AVG(NumWebPurchases) AS avgwebpurchases,
+	AVG(NumStorePurchases) AS avgstorepurchases,
+        AVG(NumCatalogPurchases) AS avgcatalogpurchases
 FROM product_orders_table;
 
--- *Web = 4.1007, Store= 5.8236 Catalog = 2.6454
 
 
 
--- USED: What are the characteristics of customers who responded positively to the pilot campaign? Is there any typical pattern among them?
+
+-- 5. Characteristics of Customers Who Responded Positively to the Pilot Campaign:
 
 SELECT 
 	income, 
@@ -82,10 +76,10 @@ JOIN Product_orders_table pot
 ORDER BY mnttotal DESC
 LIMIT 10;
 
--- * Found correlation between having an extended education & total products purchased
 
 
--- NEXT: is there a correlation between the top 10 customers that used accepted the most campaigns?
+
+-- 6. Top 10 Customers with the Most Accepted Campaigns:
 
 
 SELECT * 
@@ -95,12 +89,8 @@ JOIN customer_table cust
 ORDER BY AcceptedCmpOverall DESC
 LIMIT 10;
 
--- *AGE 45 - 60
--- *Income > 80,000
 
--- NEXT: is there a correlation between the BOTTOM 10 customers that used accepted the most campaigns?
  
-
 SELECT 
 	AVG(age) AS AvgAge,
     cust.id,
@@ -110,7 +100,8 @@ JOIN customer_table cust
 	ON cust.id = camt.id
 LIMIT 10;
 
--- Next: Relationship between campaign acceptance and purchasing behaviour?
+
+-- 7. Correlation Between Web Visit Frequency and Campaign Acceptance
 
 SELECT 
 	pot.NumWebVisitsMonth,
@@ -121,7 +112,7 @@ JOIN product_orders_table pot
 ORDER BY NumWebVisitsMonth DESC
 lIMIT 10;
 
--- *No strong correlation between web visit frequency and campaign acceptance
+-- 8. Campaign Acceptance and Purchasing Behavior:
 
 SELECT 
 	acceptedcmpoverall,
@@ -137,9 +128,9 @@ JOIN product_orders_table pot
     ON pot.id = camt.id
 ORDER BY acceptedcmpoverall DESC;
 
--- *The customers who accepted more campaigns ordered a little more wine than average but nothing too extreme. 
 
--- Is there a totalmnt & acceptedcmpoverall relationship?
+
+-- 9. Correlation Between TotalMnt and Campaign Acceptance:
 
 
 SELECT 
@@ -151,7 +142,7 @@ JOIN product_orders_table pot
 ORDER BY NumWebVisitsMonth DESC
 lIMIT 10;
 
--- *No strong correlation between web visit frequency and campaign acceptance
+-- 10. Number of Customers with Higher Education vs. Non-Higher Education:
 
 SELECT 
 	SUM(Education_Master),
